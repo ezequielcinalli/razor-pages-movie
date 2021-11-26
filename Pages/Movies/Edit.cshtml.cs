@@ -8,34 +8,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RazorPagesMovie.Models;
 
-namespace RazorPagesMovie.Pages.Movies
-{
+namespace RazorPagesMovie.Pages.Movies {
 #pragma warning disable CS8618
 #pragma warning disable CS8604
 #pragma warning disable CS8601
-  public class EditModel : PageModel
-  {
+  public class EditModel : PageModel {
     private readonly RazorPagesMovieContext _context;
 
-    public EditModel(RazorPagesMovieContext context)
-    {
+    public EditModel(RazorPagesMovieContext context) {
       _context = context;
     }
 
     [BindProperty]
     public Movie Movie { get; set; }
 
-    public async Task<IActionResult> OnGetAsync(int? id)
-    {
-      if (id == null)
-      {
+    public async Task<IActionResult> OnGetAsync(int? id) {
+      if (id == null) {
         return NotFound();
       }
 
       Movie = await _context.Movie.FirstOrDefaultAsync(m => m.ID == id);
 
-      if (Movie == null)
-      {
+      if (Movie == null) {
         return NotFound();
       }
       return Page();
@@ -43,27 +37,21 @@ namespace RazorPagesMovie.Pages.Movies
 
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see https://aka.ms/RazorPagesCRUD.
-    public async Task<IActionResult> OnPostAsync()
-    {
-      if (!ModelState.IsValid)
-      {
+    public async Task<IActionResult> OnPostAsync() {
+      if (!ModelState.IsValid) {
         return Page();
       }
 
       _context.Attach(Movie).State = EntityState.Modified;
 
-      try
-      {
+      try {
         await _context.SaveChangesAsync();
       }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (!MovieExists(Movie.ID))
-        {
+      catch (DbUpdateConcurrencyException) {
+        if (!MovieExists(Movie.ID)) {
           return NotFound();
         }
-        else
-        {
+        else {
           throw;
         }
       }
@@ -71,8 +59,7 @@ namespace RazorPagesMovie.Pages.Movies
       return RedirectToPage("./Index");
     }
 
-    private bool MovieExists(int id)
-    {
+    private bool MovieExists(int id) {
       return _context.Movie.Any(e => e.ID == id);
     }
   }
